@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ExchangeService } from './../../src/exchange/exchange.service';
 
@@ -26,5 +27,11 @@ describe('ExchangeService', () => {
     await expect(
       service.convertAmount({ from: 'USD', to: 'BRL', amount: 5 })
     ).resolves.not.toThrow()
+  });
+
+  it('should be throw an BadRequestException when call with invalid params', async () => {
+    await expect(
+      service.convertAmount({ from: '', to: '', amount: '' })
+    ).rejects.toThrow(new BadRequestException)
   });
 });
