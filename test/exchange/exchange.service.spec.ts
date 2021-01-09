@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ExchangeService } from './exchange.service';
+import { ExchangeService } from './../../src/exchange/exchange.service';
 
 describe('ExchangeService', () => {
   let service: ExchangeService;
@@ -14,5 +14,11 @@ describe('ExchangeService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('should be throw an error when call with invalid params', async () => {
+    await expect(
+      service.convertAmount({ from: '', to: '', amount: '' })
+    ).rejects.toThrow()
   });
 });
