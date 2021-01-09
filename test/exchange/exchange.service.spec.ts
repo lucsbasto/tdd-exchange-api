@@ -32,6 +32,6 @@ describe('ExchangeService', () => {
   it('should be throw an BadRequestException when call with invalid params', async () => {
     await expect(
       service.convertAmount({ from: '', to: '', amount: '' })
-    ).rejects.toThrow(new BadRequestException)
+    ).rejects.toThrow(new BadRequestException())
   });
 });

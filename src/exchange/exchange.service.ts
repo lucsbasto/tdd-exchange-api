@@ -4,7 +4,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 export class ExchangeService {
   async convertAmount({ from, to, amount }): Promise<any> {
     if (!from || !to || !amount) {
-      throw new Error(new BadRequestException)
+      throw new BadRequestException()
     }
   }
 }
