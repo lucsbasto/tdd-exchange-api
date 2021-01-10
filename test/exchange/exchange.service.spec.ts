@@ -7,9 +7,9 @@ describe('ExchangeService', () => {
   let service: ExchangeService;
   let currencyService: CurrencyService;
   let mockData = { from: 'USD', to: 'BRL', amount: 1 };
-  const currencyMock = { getCurrency: jest.fn() }
   beforeEach(async () => {
     jest.resetAllMocks()
+    const currencyMock = { getCurrency: jest.fn().mockResolvedValue({ value: 1 }) }
     const module: TestingModule = await Test.createTestingModule({
       providers: [{ provide: CurrencyService, useValue: currencyMock },
         ExchangeService
@@ -55,8 +55,14 @@ describe('ExchangeService', () => {
   });
 
   it('should be called getCurrency twice', async () => {
-    await service.convertAmount(mockData);
+    await service.convertAmount({ from: 'USD', to: 'BRL', amount: 1 });
     expect(currencyService.getCurrency).toBeCalledTimes(2);
   });
 
+  it('should be return { amount: 0.2 } when convertAmount receives { from: "USD", to: "BRL", amount: 1 }', async () => {
+    (currencyService.getCurrency as jest.Mock).mockResolvedValueOnce({ value: 1 });
+    (currencyService.getCurrency as jest.Mock).mockResolvedValueOnce({ value: 0.2 });
+    const amount = await service.convertAmount({ from: 'USD', to: 'BRL', amount: 1 })
+    expect(amount).toEqual({ amount: 0.2 })
+  });
 });
