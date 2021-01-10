@@ -41,8 +41,9 @@ describe('ExchangeService', () => {
     ).rejects.toThrow(new BadRequestException())
   });
 
-  it('should call getCurrency method twice', async () => {
+  it('should call getCurrency with correct params', async () => {
     await service.convertAmount({ from: 'USD', to: 'BRL', amount: 5 });
-    expect(currencyService.getCurrency).toBeCalledTimes(2);
+    expect(currencyService.getCurrency).toHaveBeenNthCalledWith(1, 'USD');
+    expect(currencyService.getCurrency).toHaveBeenLastCalledWith('BRL');
   });
 });
