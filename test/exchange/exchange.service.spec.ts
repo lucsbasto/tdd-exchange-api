@@ -6,10 +6,12 @@ import { ExchangeService } from './../../src/exchange/exchange.service';
 describe('ExchangeService', () => {
   let service: ExchangeService;
   let currencyService: CurrencyService;
-
+  let mockData = { from: 'USD', to: 'BRL', amount: 1 };
+  const currencyMock = { getCurrency: jest.fn() }
   beforeEach(async () => {
+    jest.resetAllMocks()
     const module: TestingModule = await Test.createTestingModule({
-      providers: [{ provide: CurrencyService, useValue: { getCurrency: jest.fn() } },
+      providers: [{ provide: CurrencyService, useValue: currencyMock },
         ExchangeService
       ],
     }).compile();
@@ -51,4 +53,10 @@ describe('ExchangeService', () => {
     (currencyService.getCurrency as jest.Mock).mockRejectedValue(new Error());
     await expect(service.convertAmount({ from: 'INVALID', to: 'BRL', amount: 5 })).rejects.toThrow();
   });
+
+  it('should be called getCurrency twice', async () => {
+    await service.convertAmount(mockData);
+    expect(currencyService.getCurrency).toBeCalledTimes(2);
+  });
+
 });
