@@ -47,7 +47,7 @@ describe('ExchangeService', () => {
     expect(currencyService.getCurrency).toHaveBeenLastCalledWith('BRL');
   });
 
-  it('should be throw when getCurrency throw', async () => {
+  it('should be throw when pass an invalid currency', async () => {
     (currencyService.getCurrency as jest.Mock).mockRejectedValue(new Error());
     await expect(service.convertAmount({ from: 'INVALID', to: 'BRL', amount: 5 })).rejects.toThrow();
   });
