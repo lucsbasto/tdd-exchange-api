@@ -67,6 +67,10 @@ describe('ExchangeService', () => {
     (currencyService.getCurrency as jest.Mock).mockResolvedValueOnce({ value: 0.2 });
     (currencyService.getCurrency as jest.Mock).mockResolvedValueOnce({ value: 1 });
     expect(await service.convertAmount({ from: 'BRL', to: 'USD', amount: 1 })).toEqual({ amount: 0.2 });
+
+    (currencyService.getCurrency as jest.Mock).mockResolvedValueOnce({ value: 1 });
+    (currencyService.getCurrency as jest.Mock).mockResolvedValueOnce({ value: 1 });
+    expect(await service.convertAmount({ from: 'BRL', to: 'BRL', amount: 1 })).toEqual({ amount: 1 });
   });
 
 });
