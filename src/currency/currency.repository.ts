@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException } from "@nestjs/common"
 import { Entity, EntityRepository, Repository } from "typeorm"
 import { Currency } from "./currency.entity"
+import { CurrencyInput } from "./types/currency-input.types"
 @EntityRepository(Currency)
 export class CurrencyRepository extends Repository<Currency>{
   async getCurrency(currency: string): Promise<Currency> {
@@ -15,11 +16,11 @@ export class CurrencyRepository extends Repository<Currency>{
     return true
   }
 
-  async createCurrency(currency: Currency): Promise<Currency> {
+  async createCurrency(currency: CurrencyInput): Promise<Currency> {
     return new Currency()
   }
 
-  async updateCurrency(currency: Currency): Promise<Currency> {
+  async updateCurrency(currency: CurrencyInput): Promise<Currency> {
     return new Currency()
   }
 }
