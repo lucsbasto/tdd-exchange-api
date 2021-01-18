@@ -9,6 +9,10 @@ export class CurrencyRepository {
     return new Currency()
   }
 
+  async deleteCurrency(currency: string): Promise<Boolean> {
+    return true
+  }
+
   async createCurrency(currency: Currency): Promise<Currency> {
     return new Currency()
   }
@@ -38,4 +42,10 @@ export class CurrencyService {
   async getCurrency(currency: string): Promise<Currency> {
       return await this.currencyRepository.getCurrency(currency)
   }
+
+  async deleteCurrency(currency: string): Promise<String> {
+      await this.currencyRepository.deleteCurrency(currency)
+      return `${currency} deleted.`
+  }
+
 }
