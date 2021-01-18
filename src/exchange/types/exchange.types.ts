@@ -1,5 +1,3 @@
-export type ExchangeInputType = {
-  from: string;
-  to: string;
+export type ExchangeType = {
   amount: number;
 }
