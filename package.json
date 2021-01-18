@@ -15,7 +15,7 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
-    "test:watch": "jest --watch",
+    "test:watch": "jest --watch --verbose",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
@@ -24,9 +24,14 @@
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
     "@nestjs/platform-express": "^7.0.0",
+    "@nestjs/typeorm": "^7.1.5",
+    "class-transformer": "^0.3.2",
+    "class-validator": "^0.13.1",
+    "mongodb": "^3.6.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.5.4"
+    "rxjs": "^6.5.4",
+    "typeorm": "^0.2.30"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",
@@ -41,6 +46,7 @@
     "eslint": "7.7.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.20.1",
+    "git-commit-msg-linter": "^3.0.0",
     "jest": "26.4.2",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2",
@@ -48,7 +54,6 @@
     "ts-loader": "^6.2.1",
     "ts-node": "9.0.0",
     "tsconfig-paths": "^3.9.0",
-    "git-commit-msg-linter": "^3.0.0",
     "typescript": "^3.7.4"
   },
   "jest": {
@@ -71,7 +76,7 @@
     },
     "coverageDirectory": "./test/coverage",
     "collectCoverageFrom": [
-      "src/**/*.ts"
+      "test/**/*.ts"
     ],
     "testEnvironment": "node",
     "moduleNameMapper": {
