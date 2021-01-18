@@ -9,8 +9,6 @@ describe('CurrencyService', () => {
   const repositoryMock = {
     getCurrency: jest.fn(),
     createCurrency: jest.fn(),
-    updateCurrency: jest.fn(),
-    deleteCurrency: jest.fn(),
   }
   beforeEach(async () => {
     jest.resetAllMocks()
@@ -75,50 +73,4 @@ describe('CurrencyService', () => {
       expect(await service.createCurrency(mockData)).toEqual(mockData)
     });
   });
-
-  describe('updateCurrency', () => {
-    it('should throw if repository throw', async () => {
-      (repository.updateCurrency as jest.Mock).mockRejectedValue(new InternalServerErrorException())
-      mockData.currency = 'INVALID'
-      await expect(service.updateCurrency(mockData)).rejects.toThrow(new InternalServerErrorException());
-    });
-    it('should not throw if repository returns', async () => {
-      (repository.updateCurrency as jest.Mock).mockResolvedValue(mockData)
-      await expect(service.updateCurrency(mockData)).resolves.not.toThrow();
-    });
-    it('should call repository with correct params', async () => {
-      service.updateCurrency(mockData)
-      await expect(repository.updateCurrency).toBeCalledWith(mockData)
-    })
-    it('should be throw if value <= 0', async () => {
-      mockData.value = 0
-      await expect(service.updateCurrency(mockData)).rejects.toThrow(
-        new BadRequestException('The value must be greater than zero')
-      )
-    });
-    it('should return when repository return', async () => {
-      (repository.updateCurrency as jest.Mock).mockResolvedValue(mockData)
-      expect(await service.updateCurrency(mockData)).toEqual(mockData)
-    });
-    });
-
-  describe('deleteCurrency', () => {
-    it('should throw if repository throw', async () => {
-      (repository.deleteCurrency as jest.Mock).mockRejectedValue(new InternalServerErrorException())
-      mockData.currency = 'INVALID'
-      await expect(service.deleteCurrency(mockData.currency)).rejects.toThrow(new InternalServerErrorException());
-    });
-    it('should not throw if repository returns true', async () => {
-      (repository.deleteCurrency as jest.Mock).mockResolvedValue(true)
-      await expect(service.deleteCurrency(mockData.currency)).resolves.not.toThrow();
-    });
-    it('should call repository with correct params', async () => {
-      service.deleteCurrency(mockData.currency)
-      await expect(repository.deleteCurrency).toBeCalledWith(mockData.currency)
-    })
-    it('should return when repository return', async () => {
-      (repository.deleteCurrency as jest.Mock).mockResolvedValue(mockData.currency)
-      expect(await service.deleteCurrency(mockData.currency)).toEqual(`${mockData.currency} deleted.`)
-    });
-    });
 });
