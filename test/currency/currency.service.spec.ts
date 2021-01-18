@@ -27,6 +27,14 @@ describe('ExchangeService', () => {
     it('should not throw if repository not throw', async () => {
       await expect(service.getCurrency('VALID')).resolves.not.toThrow();
     });
+
+    it('should call repository with correct params', async () => {
+      service.getCurrency('USD')
+      await expect(repository.getCurrency).toBeCalledWith('USD');
+
+      service.getCurrency('BRL')
+      await expect(repository.getCurrency).toBeCalledWith('BRL');
+    });
   });
 
 });
