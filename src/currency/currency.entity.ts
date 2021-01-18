@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, ObjectIdColumn, PrimaryColumn, Unique, UpdateDateColumn } from "typeorm";
-
+import {IsNotEmpty, IsNumber, Length} from 'class-validator'
+import { Type } from "class-transformer";
 @Entity()
 @Unique(['currency'])
 export class Currency {
@@ -7,9 +8,14 @@ export class Currency {
   _id: string;
 
   @PrimaryColumn()
+  @Length(3, 3)
+  @IsNotEmpty()
   currency: string;
 
   @Column()
+  @IsNumber()
+  @IsNotEmpty()
+  @Type(() => Number)
   value: number;
 
   @CreateDateColumn({type: 'timestamp with local time zone'})

@@ -5,11 +5,13 @@ import { CurrencyRepository } from "src/currency/currency.repository"
 
 describe('CurrencyRepository', () => {
   let repository;
+  let mockData: Currency;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers:  [CurrencyRepository]
     }).compile()
     repository = module.get<CurrencyRepository>(CurrencyRepository)
+    mockData = {currency: 'USD', value: 1} as Currency
   });
 
   it('should be defined', () => {
@@ -29,9 +31,40 @@ describe('CurrencyRepository', () => {
     });
 
     it('should return what findOne returns', async () => {
-      const mockData = {currency: 'USD', value: 1} as Currency
       repository.findOne = jest.fn().mockReturnValue(mockData)
       expect(await repository.getCurrency('USD')).toEqual(mockData)
     });
+  });
+
+  describe('createCurrency()', () => {
+    beforeEach(() => {
+      repository.save = jest.fn()
+    })
+    it('should call findOne with corrects params', async () => {
+      repository.save = jest.fn().mockReturnValue(mockData)
+      await repository.createCurrency(mockData);
+      expect(repository.save).toBeCalledWith(mockData)
+    });
+
+    it('should throw when save throw', async () => {
+      repository.save = jest.fn().mockRejectedValue(new InternalServerErrorException)
+      await expect(repository.createCurrency(mockData)).rejects.toThrowError(new InternalServerErrorException());
+    });
+
+    it('should not throw if save not throw', async () => {
+      repository.save = jest.fn().mockReturnValue(mockData)
+      await expect(repository.createCurrency(mockData)).resolves.not.toThrow();
+    });
+
+    it('should return a created data', async () => {
+      repository.save = jest.fn().mockReturnValue(mockData)
+      expect(await repository.createCurrency(mockData)).toEqual(mockData);
+    });
+
+    it('should not throw if called with invalid params', async () => {
+      mockData.currency = 'INVALID';
+      await expect(repository.createCurrency(mockData)).rejects.toThrowError(new InternalServerErrorException());
+    });
+
   });
 })
